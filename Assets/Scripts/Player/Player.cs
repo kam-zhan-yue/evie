@@ -11,12 +11,10 @@ public enum PlayerMode
 
 public class Player : MonoBehaviour
 {
-    [BoxGroup("Movement Parameters")]
-    [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float fov = 60f;
-    [BoxGroup("Hunting Parameters")]
-    [SerializeField] private float huntingSpeed = 3.0f;
-    [SerializeField] private float huntingFov = 100f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private float speed = 5.0f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private float fov = 60f;
+    [BoxGroup("Hunting Parameters")] [SerializeField] private float huntingSpeed = 3.0f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private float huntingFov = 100f;
 
     private Inputs _inputs;
     private Rigidbody _rb;
