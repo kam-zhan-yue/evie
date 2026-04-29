@@ -109,3 +109,4 @@ InitTestScene*.unity*
 /Assets/Plugins/Sirenix/Assemblies/*
 /Assets/Plugins/Sirenix/Demos/*
 !/Assets/Plugins/Sirenix/Demos/*.unitypackage
+.idea/
