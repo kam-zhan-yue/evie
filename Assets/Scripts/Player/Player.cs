@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,13 +19,17 @@ public class Player : MonoBehaviour
     private Rigidbody _rb;
     private Vector2 _movement;
     private PlayerMode _mode = PlayerMode.Normal;
-    private Camera _mainCamera;
-
+    private CameraController _camera;
+    
     private void Awake()
     {
         _inputs = new Inputs();
         _rb = GetComponent<Rigidbody>();
-        _mainCamera = Camera.main;
+    }
+
+    public void InitCamera(CameraController cameraController)
+    {
+        _camera = cameraController;
     }
 
     private void Start()
@@ -55,6 +58,7 @@ public class Player : MonoBehaviour
     private void NormalMode()
     {
         Move(speed * _movement);
+        Rotate();
     }
 
     private void HuntingMode()
@@ -62,6 +66,10 @@ public class Player : MonoBehaviour
         Move(huntingSpeed * _movement);
     }
 
+    private void Rotate()
+    {
+        Debug.Log(_camera.Camera.transform.rotation);
+    }
 
     private void Move(Vector2 velocity)
     {
@@ -81,12 +89,12 @@ public class Player : MonoBehaviour
     private void HuntPerformed(InputAction.CallbackContext obj)
     {
         _mode = PlayerMode.Hunting;
-        DOTween.To(() => _mainCamera.fieldOfView, x => _mainCamera.fieldOfView = x, huntingFov, 0.2f);
+        _camera.AnimateFOV(huntingFov);
     }
     
     private void HuntCancelled(InputAction.CallbackContext _)
     {
         _mode = PlayerMode.Normal;
-        DOTween.To(() => _mainCamera.fieldOfView, x => _mainCamera.fieldOfView = x, fov, 0.2f);
+        _camera.AnimateFOV(fov);
     }
 }
