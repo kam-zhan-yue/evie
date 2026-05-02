@@ -25,11 +25,13 @@ public class JumpDetector : MonoBehaviour
 
   private void Update()
   {
+    foreach (JumpTarget target in _targets) 
+    {
+      target.SetActive(false);
+    }
     if (TryGetClosest(out JumpTarget closest)) 
     {
-      foreach (JumpTarget target in _targets) {
-        target.SetActive(target == closest);
-      }
+      closest.SetActive(true);
     }
   }
 

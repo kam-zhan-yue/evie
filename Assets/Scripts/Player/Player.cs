@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private Rigidbody _rb;
     private CameraController _camera;
     private JumpDetector _jumpDetector;
+    private Interactor _interactor;
 
     // Private Stuff
     private Inputs _inputs;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
         _inputs = new Inputs();
         _rb = GetComponent<Rigidbody>();
         _jumpDetector = GetComponentInChildren<JumpDetector>();
+        _interactor = GetComponentInChildren<Interactor>();
     }
 
     public void InitCamera(CameraController cameraController)
@@ -49,6 +51,7 @@ public class Player : MonoBehaviour
         _inputs.Player.Hunt.performed += HuntPerformed;
         _inputs.Player.Hunt.canceled += HuntCancelled;
         _inputs.Player.Jump.performed += JumpPerformed;
+        _inputs.Player.Interact.performed += InteractPerformed;
     }
 
     private void FixedUpdate()
@@ -123,6 +126,7 @@ public class Player : MonoBehaviour
     
     private void JumpPerformed(InputAction.CallbackContext _)
     {
+      if (_mode != PlayerMode.Normal) return;
       if (!_jumpDetector.TryGetClosest(out JumpTarget target)) return;
       Jump(target.transform.position);
     }
@@ -139,13 +143,11 @@ public class Player : MonoBehaviour
       float y = difference.y;
       float a = Mathf.Atan2(y, xz);
       float angle = (Mathf.PI / 2 + a) / 2;
-      Debug.Log($"Angle is {Mathf.Rad2Deg *angle}");
 
       // 2. Get the initial speed
       float numerator = -Physics.gravity.y * xz * xz;
       float denominator = 2 * Mathf.Cos(angle) * Mathf.Cos(angle) * (xz * Mathf.Tan(angle) - y);
       float speed = Mathf.Sqrt(numerator / denominator);
-      Debug.Log($"Speed is {speed}");
 
       // 3. Calculate the time and set variables
       float speedX = speed * Mathf.Cos(angle);
@@ -159,12 +161,18 @@ public class Player : MonoBehaviour
     }
 
     // TODO: Check grounded
-
     private void Jumping()
     {
       _jumpTimer -= Time.fixedDeltaTime;
       if (_jumpTimer < 0f) {
         _mode = PlayerMode.Normal;
       }
+    }
+
+    private void InteractPerformed(InputAction.CallbackContext _)
+    {
+      if (_mode != PlayerMode.Normal) return;
+      if(!_interactor.TryGetClosest(out Interactable interactable)) return;
+      interactable.Activate();
     }
 }
