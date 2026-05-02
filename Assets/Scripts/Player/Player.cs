@@ -12,19 +12,25 @@ public class Player : MonoBehaviour
 {
     [BoxGroup("Movement Parameters")] [SerializeField] private float speed = 5.0f;
     [BoxGroup("Movement Parameters")] [SerializeField] private float fov = 60f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private float jumpSpeed = 5.0f;
     [BoxGroup("Hunting Parameters")] [SerializeField] private float huntingSpeed = 3.0f;
-    [BoxGroup("Movement Parameters")] [SerializeField] private float huntingFov = 100f;
+    [BoxGroup("Hunting Parameters")] [SerializeField] private float huntingFov = 100f;
 
-    private Inputs _inputs;
+    // Components
     private Rigidbody _rb;
+    private CameraController _camera;
+    private JumpDetector _jumpDetector;
+
+    // Private Stuff
+    private Inputs _inputs;
     private Vector2 _movement;
     private PlayerMode _mode = PlayerMode.Normal;
-    private CameraController _camera;
     
     private void Awake()
     {
         _inputs = new Inputs();
         _rb = GetComponent<Rigidbody>();
+        _jumpDetector = GetComponentInChildren<JumpDetector>();
     }
 
     public void InitCamera(CameraController cameraController)
@@ -39,6 +45,7 @@ public class Player : MonoBehaviour
         _inputs.Player.Move.canceled += MoveCancelled;
         _inputs.Player.Hunt.performed += HuntPerformed;
         _inputs.Player.Hunt.canceled += HuntCancelled;
+        _inputs.Player.Jump.performed += JumpPerformed;
     }
 
     private void FixedUpdate()
@@ -103,5 +110,11 @@ public class Player : MonoBehaviour
     {
         _mode = PlayerMode.Normal;
         _camera.AnimateFOV(fov);
+    }
+    
+    private void JumpPerformed(InputAction.CallbackContext _)
+    {
+      if (!_jumpDetector.TryGetClosest(out JumpTarget target)) return;
+      transform.position = target.transform.position;
     }
 }
