@@ -27,8 +27,10 @@ public class Player : MonoBehaviour
     private Inputs _inputs;
     private Vector2 _movement;
     private PlayerMode _mode = PlayerMode.Normal;
-
     private float _jumpTimer;
+
+    // Public Stuff
+    public Vector3 Velocity => _rb.linearVelocity;
     
     private void Awake()
     {
