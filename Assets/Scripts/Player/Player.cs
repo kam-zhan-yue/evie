@@ -57,23 +57,30 @@ public class Player : MonoBehaviour
 
     private void NormalMode()
     {
-        Move(speed * _movement);
-        Rotate();
+        Move(speed);
     }
 
     private void HuntingMode()
     {
-        Move(huntingSpeed * _movement);
+        Move(huntingSpeed);
     }
 
-    private void Rotate()
+    private void Move(float moveSpeed)
     {
-        Debug.Log(_camera.Camera.transform.rotation);
-    }
+      Vector3 forward = _camera.Camera.transform.forward;
+      Vector3 right = _camera.Camera.transform.right;
+      forward.y = 0;
+      right.y = 0;
+      forward.Normalize();
+      right.Normalize();
 
-    private void Move(Vector2 velocity)
-    {
-        _rb.linearVelocity = new Vector3(velocity.x, 0.0f, velocity.y);
+      Vector3 moveDirection = forward * _movement.y + right * _movement.x;
+      _rb.linearVelocity = moveDirection * moveSpeed;
+
+      if (moveDirection.sqrMagnitude > 0.001f) {
+        Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+        _rb.MoveRotation(Quaternion.Slerp(transform.rotation, toRotation, 10f * Time.fixedDeltaTime));
+      }
     }
 
     private void MovePerformed(InputAction.CallbackContext obj)
