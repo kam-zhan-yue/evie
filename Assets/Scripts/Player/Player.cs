@@ -6,13 +6,14 @@ public enum PlayerMode
 {
     Normal,
     Hunting,
+    Jumping,
 }
 
 public class Player : MonoBehaviour
 {
     [BoxGroup("Movement Parameters")] [SerializeField] private float speed = 5.0f;
     [BoxGroup("Movement Parameters")] [SerializeField] private float fov = 60f;
-    [BoxGroup("Movement Parameters")] [SerializeField] private float jumpSpeed = 5.0f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private float jumpOffset = 0.2f;
     [BoxGroup("Hunting Parameters")] [SerializeField] private float huntingSpeed = 3.0f;
     [BoxGroup("Hunting Parameters")] [SerializeField] private float huntingFov = 100f;
 
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
     private Inputs _inputs;
     private Vector2 _movement;
     private PlayerMode _mode = PlayerMode.Normal;
+
+    private float _jumpTimer;
     
     private void Awake()
     {
@@ -54,20 +57,23 @@ public class Player : MonoBehaviour
         switch (_mode)
         {
             case PlayerMode.Normal:
-                NormalMode();
+                Moving();
                 break;
             case PlayerMode.Hunting:
-                HuntingMode();
+                Hunting();
+                break;
+            case PlayerMode.Jumping:
+                Jumping();
                 break;
         }
     }
 
-    private void NormalMode()
+    private void Moving()
     {
         Move(speed);
     }
 
-    private void HuntingMode()
+    private void Hunting()
     {
         Move(huntingSpeed);
     }
@@ -81,18 +87,21 @@ public class Player : MonoBehaviour
       forward.Normalize();
       right.Normalize();
 
-      Vector3 moveDirection = forward * _movement.y + right * _movement.x;
-      _rb.linearVelocity = moveDirection * moveSpeed;
+      Vector3 targetDir = forward * _movement.y + right * _movement.x;
+      Vector3 targetVelocity = targetDir * moveSpeed;
+      Vector3 velocity = _rb.linearVelocity;
+      velocity.x = targetVelocity.x;
+      velocity.z = targetVelocity.z;
+      _rb.linearVelocity = velocity;
 
-      if (moveDirection.sqrMagnitude > 0.001f) {
-        Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+      if (targetDir.sqrMagnitude > 0.001f) {
+        Quaternion toRotation = Quaternion.LookRotation(targetDir, Vector3.up);
         _rb.MoveRotation(Quaternion.Slerp(transform.rotation, toRotation, 10f * Time.fixedDeltaTime));
       }
     }
 
     private void MovePerformed(InputAction.CallbackContext obj)
-    {
-        _movement = obj.action.ReadValue<Vector2>();
+    { _movement = obj.action.ReadValue<Vector2>();
     }
     
     private void MoveCancelled(InputAction.CallbackContext _)
@@ -115,6 +124,47 @@ public class Player : MonoBehaviour
     private void JumpPerformed(InputAction.CallbackContext _)
     {
       if (!_jumpDetector.TryGetClosest(out JumpTarget target)) return;
-      transform.position = target.transform.position;
+      Jump(target.transform.position);
+    }
+
+    private void Jump(Vector3 target)
+    {
+      // Source: https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)
+      // 1. Get the launch angle to allow for the lowest possible velocity
+      Vector3 adjustedTarget = new(target.x, target.y + jumpOffset, target.z);
+      Vector3 difference = adjustedTarget - transform.position;
+      Vector2 xzDiff = new(difference.x, difference.z);
+      Vector2 xzDir = xzDiff.normalized;
+      float xz = xzDiff.magnitude;
+      float y = difference.y;
+      float a = Mathf.Atan2(y, xz);
+      float angle = (Mathf.PI / 2 + a) / 2;
+      Debug.Log($"Angle is {Mathf.Rad2Deg *angle}");
+
+      // 2. Get the initial speed
+      float numerator = -Physics.gravity.y * xz * xz;
+      float denominator = 2 * Mathf.Cos(angle) * Mathf.Cos(angle) * (xz * Mathf.Tan(angle) - y);
+      float speed = Mathf.Sqrt(numerator / denominator);
+      Debug.Log($"Speed is {speed}");
+
+      // 3. Calculate the time and set variables
+      float speedX = speed * Mathf.Cos(angle);
+      float speedY = speed * Mathf.Sin(angle);
+      float time = xz / speedX;
+
+      Vector3 initialVelocity = new(xzDir.x * speedX, speedY, xzDir.y * speedX);
+      _rb.linearVelocity = initialVelocity;
+      _jumpTimer = time;
+      _mode = PlayerMode.Jumping;
+    }
+
+    // TODO: Check grounded
+
+    private void Jumping()
+    {
+      _jumpTimer -= Time.fixedDeltaTime;
+      if (_jumpTimer < 0f) {
+        _mode = PlayerMode.Normal;
+      }
     }
 }
