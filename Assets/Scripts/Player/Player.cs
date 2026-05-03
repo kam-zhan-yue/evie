@@ -175,6 +175,6 @@ public class Player : MonoBehaviour
     {
       if (_mode != PlayerMode.Normal) return;
       if(!_interactor.TryGetClosest(out Interactable interactable)) return;
-      interactable.Activate();
+      interactable.Activate(_interactor);
     }
 }

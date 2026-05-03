@@ -9,13 +9,25 @@ public class Interactor : MonoBehaviour
   private void OnTriggerEnter(Collider other) 
   {
     if (other.TryGetComponent(out Interactable interactable))
-      _interactables.Add(interactable);
+      Add(interactable);
   }
 
   private void OnTriggerExit(Collider other)
   {
     if (other.TryGetComponent(out Interactable interactable))
-      _interactables.Remove(interactable);
+      Remove(interactable);
+  }
+
+  private void Add(Interactable interactable)
+  {
+    interactable.OnDestroyed += Remove;
+    _interactables.Add(interactable);
+  }
+
+  private void Remove(Interactable interactable)
+  {
+    interactable.OnDestroyed -= Remove;
+    _interactables.Remove(interactable);
   }
 
   private void Update()

@@ -8,9 +8,9 @@ public class RiceCooker : Interactable
   [SerializeField] private Vector3 hingeAngle = new(0, 0, 90);
   [SerializeField] private readonly float animationTime = 0.8f;
 
-  public override void Activate()
+  public override void Activate(Interactor interactor)
   {
-    base.Activate();
+    base.Activate(interactor);
     // Animate the lid here
     animating = true;
     hinge.DORotate(hingeAngle, animationTime)

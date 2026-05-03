@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
   // Exposed Variables
-  [SerializeField] private readonly bool activateOnce = true;
+  [SerializeField] private bool activateOnce = true;
 
   // Components
   private InteractablePopup _popup;
@@ -11,6 +12,8 @@ public abstract class Interactable : MonoBehaviour
   // Private Variables
   private bool _activated = false;
   protected bool animating = false;
+
+  public Action<Interactable> OnDestroyed;
 
   protected virtual void Awake()
   {
@@ -22,7 +25,7 @@ public abstract class Interactable : MonoBehaviour
     SetActive(false);
   }
   
-  public virtual void Activate()
+  public virtual void Activate(Interactor interactor)
   {
     _activated = true;
   }
@@ -48,5 +51,10 @@ public abstract class Interactable : MonoBehaviour
   protected virtual void HideActive()
   {
       _popup.HidePopup();
+  }
+
+  protected virtual void OnDestroy()
+  {
+    OnDestroyed?.Invoke(this);
   }
 }
