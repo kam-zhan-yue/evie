@@ -468,7 +468,7 @@ Transform:
   m_GameObject: {fileID: 194759016}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.93, z: 0}
+  m_LocalPosition: {x: 0, y: 0.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -874,7 +874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Glass
   activateOnce: 1
   pushOrigin: {fileID: 194759017}
-  pushForce: 20
+  pushForce: 50
   breakableThreshold: 3
   brokenGlassPrefab: {fileID: 6220447365008234357, guid: 69af67c13dede484a9f008ca2559098f, type: 3}
 --- !u!1 &718441443
@@ -2261,7 +2261,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RiceCooker
   activateOnce: 1
+  hinge: {fileID: 1226341388}
   hingeAngle: {x: 0, y: 0, z: 90}
+  animationTime: 0.8
 --- !u!4 &1282206642
 Transform:
   m_ObjectHideFlags: 0
@@ -3243,8 +3245,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1831468927}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17014545, y: -0.30996, z: 0.05648345, w: 0.9336943}
-  m_LocalPosition: {x: 0.55995333, y: 0.3597058, z: -0.77202874}
+  m_LocalRotation: {x: -0.03577214, y: 0.87777, z: 0.06636838, w: 0.47311252}
+  m_LocalPosition: {x: -0.7893938, y: 0.29870582, z: 0.53519505}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3758,31 +3760,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.55995333
+      value: -0.7893938
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.30070582
+      value: 0.23970582
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.77202874
+      value: 0.53519505
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.93369424
+      value: 0.47311255
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.17014544
+      value: -0.03577215
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.30995998
+      value: 0.87777
       objectReference: {fileID: 0}
     - target: {fileID: 9055759890956782250, guid: 4cea8f1dd9c0148368be8eb1e9e69cd4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.05648345
+      value: 0.066368386
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

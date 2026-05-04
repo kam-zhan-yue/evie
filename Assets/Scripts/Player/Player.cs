@@ -11,6 +11,9 @@ public enum PlayerMode
 
 public class Player : MonoBehaviour
 {
+  private const float GROUNDED_CHECK = 0.3f;
+    [BoxGroup("Movement Parameters")] [SerializeField] private Transform groundedCheck;
+    [BoxGroup("Movement Parameters")] [SerializeField] private LayerMask groundedLayer;
     [BoxGroup("Movement Parameters")] [SerializeField] private float speed = 5.0f;
     [BoxGroup("Movement Parameters")] [SerializeField] private float fov = 60f;
     [BoxGroup("Movement Parameters")] [SerializeField] private float jumpOffset = 0.2f;
@@ -28,6 +31,8 @@ public class Player : MonoBehaviour
     private Vector2 _movement;
     private PlayerMode _mode = PlayerMode.Normal;
     private float _jumpTimer;
+    private bool _grounded;
+    private readonly RaycastHit[] raycastHits = new RaycastHit[1];
 
     // Public Stuff
     public Vector3 Velocity => _rb.linearVelocity;
@@ -43,6 +48,7 @@ public class Player : MonoBehaviour
     public void InitCamera(CameraController cameraController)
     {
         _camera = cameraController;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Start()
@@ -58,6 +64,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+      CheckGrounded();
         // Move normally for both
         switch (_mode)
         {
@@ -71,6 +78,12 @@ public class Player : MonoBehaviour
                 Jumping();
                 break;
         }
+    }
+
+    private void CheckGrounded()
+    {
+      int hits = Physics.RaycastNonAlloc(groundedCheck.position, groundedCheck.TransformDirection(Vector3.down), raycastHits, GROUNDED_CHECK, groundedLayer);
+      _grounded = hits > 0;
     }
 
     private void Moving()
@@ -129,6 +142,7 @@ public class Player : MonoBehaviour
     private void JumpPerformed(InputAction.CallbackContext _)
     {
       if (_mode != PlayerMode.Normal) return;
+      if (!_grounded) return;
       if (!_jumpDetector.TryGetClosest(out JumpTarget target)) return;
       Jump(target.transform.position);
     }
@@ -156,15 +170,20 @@ public class Player : MonoBehaviour
       float speedY = speed * Mathf.Sin(angle);
       float time = xz / speedX;
 
+      // 4. Jump and face the jump direction!
       Vector3 initialVelocity = new(xzDir.x * speedX, speedY, xzDir.y * speedX);
       _rb.linearVelocity = initialVelocity;
       _jumpTimer = time;
+
       _mode = PlayerMode.Jumping;
     }
 
     // TODO: Check grounded
     private void Jumping()
     {
+      Vector3 jumpDirection = new(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+      Quaternion toRotation = Quaternion.LookRotation(jumpDirection.normalized);
+      _rb.MoveRotation(Quaternion.Slerp(transform.rotation, toRotation, 10f * Time.fixedDeltaTime));
       _jumpTimer -= Time.fixedDeltaTime;
       if (_jumpTimer < 0f) {
         _mode = PlayerMode.Normal;

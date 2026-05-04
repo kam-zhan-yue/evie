@@ -110,3 +110,6 @@ InitTestScene*.unity*
 /Assets/Plugins/Sirenix/Demos/*
 !/Assets/Plugins/Sirenix/Demos/*.unitypackage
 .idea/
+
+# MacOS
+*.DS_Store

@@ -3,10 +3,10 @@ using DG.Tweening;
 
 public class RiceCooker : Interactable
 {
-  [SerializeField] private readonly Transform hinge;
+  [SerializeField] private Transform hinge;
 
   [SerializeField] private Vector3 hingeAngle = new(0, 0, 90);
-  [SerializeField] private readonly float animationTime = 0.8f;
+  [SerializeField] private float animationTime = 0.8f;
 
   public override void Activate(Interactor interactor)
   {
