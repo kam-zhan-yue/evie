@@ -37,6 +37,7 @@ public abstract class Interactable : MonoBehaviour
 
   public void SetActive(bool active)
   {
+    Debug.Log($"{name} is active {active} {_popup.name}");
     if (active)
       ShowActive();
     else

@@ -5,7 +5,7 @@ public class Glass : Interactable
   [SerializeField] private Transform pushOrigin;
   [SerializeField] private float pushForce = 50f;
   [SerializeField] private float breakableThreshold = 1.0f;
-  [SerializeField] private GameObject brokenGlassPrefab;
+  [SerializeField] private Transform brokenGlassPrefab;
 
   private Rigidbody _rb;
 

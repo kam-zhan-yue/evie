@@ -8,14 +8,23 @@ public class Interactor : MonoBehaviour
 
   private void OnTriggerEnter(Collider other) 
   {
-    if (other.TryGetComponent(out Interactable interactable))
+    if (TryFindInteractable(other, out Interactable interactable))
       Add(interactable);
   }
 
   private void OnTriggerExit(Collider other)
   {
-    if (other.TryGetComponent(out Interactable interactable))
+    if (TryFindInteractable(other, out Interactable interactable))
       Remove(interactable);
+  }
+
+  private bool TryFindInteractable(Collider collider, out Interactable interactable)
+  {
+    if (collider.TryGetComponent(out interactable))
+      return true;
+    if (collider.transform.parent)
+      return collider.transform.parent.TryGetComponent(out interactable);
+    return false;
   }
 
   private void Add(Interactable interactable)
