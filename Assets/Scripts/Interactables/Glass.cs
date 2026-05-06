@@ -32,7 +32,6 @@ public class Glass : Interactable
 
   public override void Activate(Interactor interactor)
   {
-    base.Activate(interactor);
     _rb.isKinematic = false;
     Vector3 pushDirection = transform.position - interactor.transform.position;
     _rb.AddForceAtPosition(pushDirection * pushForce, pushOrigin.position, ForceMode.Impulse);

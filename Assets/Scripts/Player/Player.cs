@@ -178,7 +178,6 @@ public class Player : MonoBehaviour
       _mode = PlayerMode.Jumping;
     }
 
-    // TODO: Check grounded
     private void Jumping()
     {
       Vector3 jumpDirection = new(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);

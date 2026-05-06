@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7346646589779928889}
   - component: {fileID: 4460264276347640672}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Evie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 9098847080594311392}
   - component: {fileID: 2694999682651139413}
   - component: {fileID: 3254370033087269865}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: JumpDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 4114550573172450508}
   - component: {fileID: 77707044537265781}
   - component: {fileID: 5031012817885349746}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Interactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1372021763656857313}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundedCheck
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -205,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 1526753528583511021}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0091, z: -0.0485}
+  m_LocalPosition: {x: 0, y: 0.0285, z: -0.0485}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 2896386922821933679}
   - component: {fileID: 7212900148233206422}
   - component: {fileID: 4241202412149724001}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577628196509246166}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.035903204, y: 0.87683356, z: 0.066297576, w: 0.47484583}
+  m_LocalRotation: {x: -0.035782594, y: 0.8776955, z: 0.06636276, w: 0.47325072}
   m_LocalPosition: {x: -0.7893938, y: 0.28770584, z: 0.53519505}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 8077867855574864589}
   - component: {fileID: 9070727520067471253}
   - component: {fileID: 7513647993268713303}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ MonoBehaviour:
   groundedCheck: {fileID: 1372021763656857313}
   groundedLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 119
   speed: 2
   fov: 60
   jumpOffset: 0.2
@@ -646,6 +646,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a72e001d503c94c52a00d1c2f1d3f0d9, type: 3}
       propertyPath: m_Name
       value: evie
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a72e001d503c94c52a00d1c2f1d3f0d9, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

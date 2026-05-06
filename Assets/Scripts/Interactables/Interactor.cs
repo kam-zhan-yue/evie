@@ -22,19 +22,24 @@ public class Interactor : MonoBehaviour
   {
     if (collider.TryGetComponent(out interactable))
       return true;
-    if (collider.transform.parent)
-      return collider.transform.parent.TryGetComponent(out interactable);
+    if (collider.TryGetComponent(out InteractableChild child))
+    {
+      interactable = child.Interactable;
+      return true;
+    }
     return false;
   }
 
   private void Add(Interactable interactable)
   {
     interactable.OnDestroyed += Remove;
-    _interactables.Add(interactable);
+    if (!_interactables.Contains(interactable))
+      _interactables.Add(interactable);
   }
 
   private void Remove(Interactable interactable)
   {
+    interactable.SetActive(false);
     interactable.OnDestroyed -= Remove;
     _interactables.Remove(interactable);
   }

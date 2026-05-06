@@ -18,13 +18,25 @@ public abstract class Interactable : MonoBehaviour
   protected virtual void Awake()
   {
     _popup = GetComponentInChildren<InteractablePopup>();
+    if (_popup == null)
+    {
+      Debug.LogWarning($"{name} is missing an InteractablePopup");
+      enabled = false;
+    }
+
+    Collider[] colliders = GetComponentsInChildren<Collider>();
+    for (int i = 0; i < colliders.Length; ++i)
+    {
+      InteractableChild child = colliders[i].gameObject.AddComponent<InteractableChild>();
+      child.Init(this);
+    }
   }
 
   protected virtual void Start()
   {
     SetActive(false);
   }
-  
+
   public virtual void Activate(Interactor interactor)
   {
     _activated = true;
@@ -37,7 +49,6 @@ public abstract class Interactable : MonoBehaviour
 
   public void SetActive(bool active)
   {
-    Debug.Log($"{name} is active {active} {_popup.name}");
     if (active)
       ShowActive();
     else
