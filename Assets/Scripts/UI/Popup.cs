@@ -7,7 +7,15 @@ public abstract class Popup : MonoBehaviour
 
   protected virtual void Awake()
   {
+    if (transform.childCount == 0) {
+      Debug.LogError($"{name} is missing a MainHolder");
+      enabled = false;
+      return;
+    }
     _mainHolder = transform.GetChild(0).GetComponent<RectTransform>();
+  }
+
+  protected virtual void Start() {
   }
 
   public virtual void ShowPopup()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Kuroneko.UtilityDelivery;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -9,10 +10,19 @@ public class Game : MonoBehaviour
 
   private void Awake()
   {
-    GameObject managers = new ("Managers");
-    DontDestroyOnLoad(managers);
-    Instantiate(saveManager, managers.transform);
-    Instantiate(questManager, managers.transform);
-    saveManager.Load(new List<Manager>{questManager});
+    // Create Services
+    GameObject services = new ("Services");
+    DontDestroyOnLoad(services);
+    Instantiate(saveManager, services.transform);
+    Instantiate(questManager, services.transform);
+
+    // Register Services
+    ServiceLocator serviceLocator = ServiceLocator.Instance;
+    serviceLocator.Register<IQuestService>(questManager);
+    serviceLocator.Register<ISaveService>(saveManager);
+
+    // Load
+    saveManager.Init(new List<ISaveable>{questManager});
+    saveManager.Load();
   }
 }

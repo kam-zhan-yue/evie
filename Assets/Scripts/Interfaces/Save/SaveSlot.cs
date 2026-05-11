@@ -14,13 +14,6 @@ public struct QuestSaveData
   public string questId;
   public bool completed;
   public int amount;
-
-  public QuestSaveData(Quest quest, QuestTracker tracker)
-  {
-    questId = quest.name;
-    completed = tracker.completed;
-    amount = tracker.amount;
-  }
 }
 
 [Serializable]
