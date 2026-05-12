@@ -1,3 +1,4 @@
+using Kuroneko.UtilityDelivery;
 using UnityEngine;
 
 public class Glass : Interactable
@@ -26,6 +27,7 @@ public class Glass : Interactable
 
   private void Break()
   {
+    ServiceLocator.Instance.Get<IInteractionService>().OnGlassBreak();
     Instantiate(brokenGlassPrefab, transform.position, transform.rotation);
     Destroy(gameObject);
   }

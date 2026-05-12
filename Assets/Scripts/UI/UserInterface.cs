@@ -5,8 +5,13 @@ public class UserInterface : MonoBehaviour, UI
 {
   [SerializeField] private QuestPopup questPopup;
 
-  public void ReportQuestComplete(Quest quest)
+  public void ReportQuestComplete(QuestUIData quest)
   {
     questPopup.ReportQuestComplete(quest);
+  }
+
+  public void UpdateQuest(QuestUIData quest)
+  {
+    questPopup.UpdateQuest(quest);
   }
 }

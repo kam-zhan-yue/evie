@@ -12,9 +12,16 @@ public class QuestManager : Manager, IQuestService, ISaveable
   public void Load(SaveSlot saveSlot)
   {
     _data.Clear();
-    if (saveSlot.questSaveData == null) return;
-    foreach (QuestSaveData entry in saveSlot.questSaveData.AsValueEnumerable())
-      _data.Add(database.GetQuest(entry.questId), new QuestTracker(entry));
+    if (saveSlot.questSaveData == null) 
+    {
+      foreach (Quest quest in database.quests)
+        AddQuest(quest);
+    }
+    else 
+    {
+      foreach (QuestSaveData entry in saveSlot.questSaveData.AsValueEnumerable())
+        _data.Add(database.GetQuest(entry.questId), new QuestTracker(entry));
+    }
   }
 
   public SaveSlot Save(SaveSlot saveSlot)
@@ -49,8 +56,13 @@ public class QuestManager : Manager, IQuestService, ISaveable
     if (!_data.TryGetValue(quest, out QuestTracker tracker)) return;
     if (tracker.completed) return;
     tracker.amount += 1;
-    if (tracker.amount > quest.amount)
+    if (tracker.amount >= quest.amount)
+    {
+      tracker.completed = true;
       ReportQuestComplete(quest);
+    }
+    else
+      UpdateQuest(quest);
   }
 
   public void SetQuest(Quest quest, int amount)
@@ -58,32 +70,46 @@ public class QuestManager : Manager, IQuestService, ISaveable
     if (!_data.TryGetValue(quest, out QuestTracker tracker)) return;
     if (tracker.completed) return;
     tracker.amount = amount;
-    if (tracker.amount > quest.amount)
+    if (tracker.amount >= quest.amount)
+    {
+      tracker.completed = true;
       ReportQuestComplete(quest);
+    }
+    else
+      UpdateQuest(quest);
   }
 
   private void ReportQuestComplete(Quest quest) 
   {
-    ServiceLocator.Instance.Get<UI>().ReportQuestComplete(quest); 
+    ServiceLocator.Instance.Get<UI>().ReportQuestComplete(ConvertUIData(quest)); 
+  }
+
+  private void UpdateQuest(Quest quest) 
+  {
+    ServiceLocator.Instance.Get<UI>().UpdateQuest(ConvertUIData(quest));
+  }
+
+  private QuestUIData ConvertUIData(Quest quest) 
+  {
+    QuestUIData data = new()
+    {
+      id = quest.name,
+      description = quest.description,
+      showCount = quest.type == QuestType.Collect,
+      total = quest.amount,
+      completed = false,
+      count = 0,
+    };
+    if (_data.TryGetValue(quest, out QuestTracker tracker)) 
+    {
+      data.completed = tracker.completed;
+      data.count = tracker.amount;
+    } 
+    return data;
   }
 
   public List<QuestUIData> GetUIData()
   {
-    return database.quests.AsValueEnumerable().Select(quest => {
-      QuestUIData data = new()
-      {
-          description = quest.description,
-          showCount = quest.type == QuestType.Collect,
-          total = quest.amount,
-          completed = false,
-          count = 0,
-      };
-      if (_data.TryGetValue(quest, out QuestTracker tracker)) 
-      {
-        data.completed = tracker.completed;
-        data.count = tracker.amount;
-      } 
-      return data;
-    }).ToList();
+    return database.quests.AsValueEnumerable().Select(quest => ConvertUIData(quest)).ToList();
   }
 }

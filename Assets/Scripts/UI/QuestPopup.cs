@@ -13,7 +13,13 @@ public class QuestPopup : PopupList<QuestPopupItem, QuestUIData>
     ShowPopupItems();
   }
 
-  public void ReportQuestComplete(Quest quest) 
+  public void ReportQuestComplete(QuestUIData data) 
   {
+    UpdateItem(data);
+  }
+
+  public void UpdateQuest(QuestUIData data) 
+  {
+    UpdateItem(data);
   }
 }

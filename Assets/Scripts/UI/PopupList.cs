@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using Kuroneko.UtilityDelivery;
 
-public abstract class PopupList<T, E> : Popup where T : PopupItem<E>
+public abstract class PopupList<T, E> : Popup where T : PopupItem<E> where E : UIData
 {
   [SerializeField] private RectTransform popupHolder;
   [SerializeField] private PopupItem<E> samplePopupItem;
 
   protected List<PopupItem<E>> _items = new();
   protected List<E> _data = new();
+  protected Dictionary<string, PopupItem<E>> _current = new();
 
   protected override void Start() 
   {
@@ -41,11 +42,19 @@ public abstract class PopupList<T, E> : Popup where T : PopupItem<E>
   {
     base.ShowPopup();
     TryInstantiateItems();
+    _current.Clear();
 
     for (int i = 0; i < _data.Count; ++i) 
     {
       _items[i].Init(_data[i]);
       _items[i].Show();
+      _current.Add(_data[i].ID(), _items[i]);
     }
+  }
+
+  protected void UpdateItem(E data) 
+  {
+    if (!_current.TryGetValue(data.ID(), out PopupItem<E> popupItem)) return;
+    popupItem.Init(data);
   }
 }
