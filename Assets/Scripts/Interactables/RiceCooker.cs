@@ -18,5 +18,13 @@ public class RiceCooker : Interactable
     base.Activate(interactor);
     _animator.SetTrigger("Open");
     ServiceLocator.Instance.Get<IInteractionService>().OnRiceCookerOpen();
+    // TODO: Make this way more readable
+    ServiceLocator.Instance.Get<UI>().PlayDialogue(interactor.transform.position,
+      new DialogueUIData() {
+        speaker = "Evie",
+        color = Color.black,
+        text = "Hmmm ricey rice rice",
+      }
+    );
   }
 }

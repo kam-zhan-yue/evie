@@ -4,6 +4,7 @@ using UnityEngine;
 public class UserInterface : MonoBehaviour, UI
 {
   [SerializeField] private QuestPopup questPopup;
+  [SerializeField] private DialoguePopup dialoguePopup;
 
   public void ReportQuestComplete(QuestUIData quest)
   {
@@ -13,5 +14,10 @@ public class UserInterface : MonoBehaviour, UI
   public void UpdateQuest(QuestUIData quest)
   {
     questPopup.UpdateQuest(quest);
+  }
+
+  public void PlayDialogue(Vector3 worldPos, DialogueUIData data)
+  {
+    dialoguePopup.PlayDialogue(worldPos, data);
   }
 }

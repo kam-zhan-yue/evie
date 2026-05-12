@@ -1,19 +1,27 @@
 using UnityEngine;
 
-public class Computer : MonoBehaviour
+public class Computer : Interactable
 {
   [SerializeField] private float typingSpeed = 10f;
-  private ComputerPopup _popup;
+  private ComputerPopup _computerPopup;
   private Keyboard _keyboard;
 
-  private void Awake()
+  protected override void Awake()
   {
+    base.Awake();
     _keyboard = GetComponentInChildren<Keyboard>();
-    _popup = GetComponentInChildren<ComputerPopup>();
+    _computerPopup = GetComponentInChildren<ComputerPopup>();
   }
 
-  private void Start()
+  protected override void Start()
   {
-    _keyboard.Init(_popup, typingSpeed);
+    base.Start();
+    _keyboard.Init(_computerPopup, typingSpeed);
+  }
+
+  public override void Activate(Interactor interactor)
+  {
+    base.Activate(interactor);
+    _computerPopup.HidePopup();
   }
 }
