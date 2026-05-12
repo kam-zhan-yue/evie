@@ -45,3 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionManager
   breakGlassQuest: {fileID: 11400000, guid: a4d4ef51cf735445d8bc2d9cc6a38a67, type: 2}
+  doorOpenQuest: {fileID: 11400000, guid: c7eca37654c2340609cc0493035a7d97, type: 2}
+  videoGameQuest: {fileID: 11400000, guid: db021a38acd614e398fe05b418c120c1, type: 2}
+  riceCookerQuest: {fileID: 11400000, guid: 9496c395c789a4bcebff5af4a8d8ddc5, type: 2}

@@ -1,3 +1,4 @@
+using Kuroneko.UtilityDelivery;
 using UnityEngine;
 
 public class RiceCooker : Interactable
@@ -16,5 +17,6 @@ public class RiceCooker : Interactable
   {
     base.Activate(interactor);
     _animator.SetTrigger("Open");
+    ServiceLocator.Instance.Get<IInteractionService>().OnRiceCookerOpen();
   }
 }
