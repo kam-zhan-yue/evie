@@ -7,6 +7,7 @@ public class Game : MonoBehaviour
   [Header("Managers")]
   [SerializeField] public SaveManager saveManager;
   [SerializeField] public QuestManager questManager;
+  [SerializeField] public UserInterface userInterface;
 
   private void Awake()
   {
@@ -20,6 +21,7 @@ public class Game : MonoBehaviour
     ServiceLocator serviceLocator = ServiceLocator.Instance;
     serviceLocator.Register<IQuestService>(questManager);
     serviceLocator.Register<ISaveService>(saveManager);
+    serviceLocator.Register<UI>(userInterface);
 
     // Load
     saveManager.Init(new List<ISaveable>{questManager});

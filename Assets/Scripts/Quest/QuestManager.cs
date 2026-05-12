@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Kuroneko.UtilityDelivery;
 using UnityEngine;
 using ZLinq;
 
@@ -38,13 +39,32 @@ public class QuestManager : Manager, IQuestService, ISaveable
   public void CompleteQuest(Quest quest)
   {
     if (!_data.TryGetValue(quest, out QuestTracker tracker)) return;
+    if (tracker.completed) return;
     tracker.completed = true;
+    ReportQuestComplete(quest);
+  }
+
+  public void IncrementQuest(Quest quest)
+  {
+    if (!_data.TryGetValue(quest, out QuestTracker tracker)) return;
+    if (tracker.completed) return;
+    tracker.amount += 1;
+    if (tracker.amount > quest.amount)
+      ReportQuestComplete(quest);
   }
 
   public void SetQuest(Quest quest, int amount)
   {
     if (!_data.TryGetValue(quest, out QuestTracker tracker)) return;
+    if (tracker.completed) return;
     tracker.amount = amount;
+    if (tracker.amount > quest.amount)
+      ReportQuestComplete(quest);
+  }
+
+  private void ReportQuestComplete(Quest quest) 
+  {
+    ServiceLocator.Instance.Get<UI>().ReportQuestComplete(quest); 
   }
 
   public List<QuestUIData> GetUIData()

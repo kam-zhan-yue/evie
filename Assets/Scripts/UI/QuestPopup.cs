@@ -12,4 +12,8 @@ public class QuestPopup : PopupList<QuestPopupItem, QuestUIData>
     ShowPopup();
     ShowPopupItems();
   }
+
+  public void ReportQuestComplete(Quest quest) 
+  {
+  }
 }
