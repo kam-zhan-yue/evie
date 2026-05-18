@@ -4,6 +4,7 @@ using Kuroneko.UtilityDelivery;
 public abstract class Popup : MonoBehaviour
 {
   private RectTransform _mainHolder;
+  protected bool _showing;
 
   protected virtual void Awake()
   {
@@ -21,10 +22,12 @@ public abstract class Popup : MonoBehaviour
   public virtual void ShowPopup()
   {
     _mainHolder.gameObject.SetActiveFast(true);
+    _showing = true;
   }
 
   public virtual void HidePopup() 
   {
     _mainHolder.gameObject.SetActiveFast(false);
+    _showing = false;
   }
 }

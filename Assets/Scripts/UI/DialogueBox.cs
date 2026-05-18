@@ -11,10 +11,14 @@ public class DialogueBox : MonoBehaviour
     _rectTransform = GetComponent<RectTransform>();
   }
 
-  public void Show(Vector2 position, DialogueUIData data)
+  public void InitData(DialogueUIData data)
   {
-    _rectTransform.position = position;
     dialogueText.color = data.color;
     dialogueText.SetText(data.text);
+  }
+
+  public void SetPosition(Vector2 position)
+  {
+    _rectTransform.position = Vector2.Lerp(_rectTransform.position, position, 0.1f);
   }
 }

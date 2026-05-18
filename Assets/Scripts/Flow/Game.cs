@@ -8,6 +8,8 @@ public class Game : MonoBehaviour
   [SerializeField] public SaveManager saveManager;
   [SerializeField] public QuestManager questManager;
   [SerializeField] public InteractionManager interactionManager;
+  [SerializeField] public EventManager eventManager;
+  [SerializeField] public DialogueManager dialogueManager;
   [SerializeField] public UserInterface userInterface;
 
   private void Awake()
@@ -18,12 +20,16 @@ public class Game : MonoBehaviour
     Instantiate(saveManager, services.transform);
     Instantiate(questManager, services.transform);
     Instantiate(interactionManager, services.transform);
+    Instantiate(eventManager, services.transform);
+    Instantiate(dialogueManager, services.transform);
 
     // Register Services
     ServiceLocator serviceLocator = ServiceLocator.Instance;
     serviceLocator.Register<IQuestService>(questManager);
     serviceLocator.Register<ISaveService>(saveManager);
     serviceLocator.Register<IInteractionService>(interactionManager);
+    serviceLocator.Register<IEventService>(eventManager);
+    serviceLocator.Register<IDialogueService>(dialogueManager);
     serviceLocator.Register<UI>(userInterface);
 
     // Load

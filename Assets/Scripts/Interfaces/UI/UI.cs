@@ -5,5 +5,5 @@ public interface UI : IGameService
 {
   public void ReportQuestComplete(QuestUIData quest);
   public void UpdateQuest(QuestUIData quest);
-  public void PlayDialogue(Vector3 worldPos, DialogueUIData data);
+  public void PlayDialogue(Transform target, DialogueUIData data);
 }

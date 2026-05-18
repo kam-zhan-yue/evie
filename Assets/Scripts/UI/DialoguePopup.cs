@@ -7,6 +7,7 @@ public class DialoguePopup : Popup
   [SerializeField] DialogueBox dialogueBox;
 
   private Camera mainCamera;
+  private Transform _target;
 
   protected override void Awake()
   {
@@ -20,19 +21,28 @@ public class DialoguePopup : Popup
     HidePopup();
   }
 
-  public void PlayDialogue(Vector3 worldPos, DialogueUIData data)
-  {
-    PlayDialogueAsync(worldPos, data).Forget();
+  private void Update() {
+    if (!_showing) return;
+    if (!_target) return;
+
+    // Convert world position to screen position
+    Vector2 screenPos = mainCamera.WorldToScreenPoint(_target.position);
+    Vector2 dialoguePos = screenPos + dialogueOffset;
+    dialogueBox.SetPosition(dialoguePos);
   }
 
-  private async UniTask PlayDialogueAsync(Vector3 worldPos, DialogueUIData data)
+  public void PlayDialogue(Transform target, DialogueUIData data)
   {
-    // Convert world position to screen position
-    Vector2 screenPos = mainCamera.WorldToScreenPoint(worldPos);
-    Vector2 dialoguePos = screenPos + dialogueOffset;
-    dialogueBox.Show(dialoguePos, data);
+    PlayDialogueAsync(target, data).Forget();
+  }
+
+  private async UniTask PlayDialogueAsync(Transform target, DialogueUIData data)
+  {
+    _target = target;
+    dialogueBox.InitData(data);
     ShowPopup();
     await UniTask.WaitForSeconds(2.0f);
+    _target = null;
     HidePopup();
   }
 }

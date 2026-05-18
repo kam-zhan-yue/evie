@@ -15,7 +15,6 @@ public class QuestPopupItem : PopupItem<QuestUIData>
     else 
       questText.SetText($"{data.description}");
 
-    Debug.Log($"Quest {data.description} | Complete: {data.completed}");
     completedState.gameObject.SetActiveFast(data.completed);
     incompletedState.gameObject.SetActiveFast(!data.completed);
   }

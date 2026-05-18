@@ -16,8 +16,8 @@ public class UserInterface : MonoBehaviour, UI
     questPopup.UpdateQuest(quest);
   }
 
-  public void PlayDialogue(Vector3 worldPos, DialogueUIData data)
+  public void PlayDialogue(Transform target, DialogueUIData data)
   {
-    dialoguePopup.PlayDialogue(worldPos, data);
+    dialoguePopup.PlayDialogue(target, data);
   }
 }

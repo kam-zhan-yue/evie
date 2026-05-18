@@ -19,7 +19,8 @@ public class RiceCooker : Interactable
     _animator.SetTrigger("Open");
     ServiceLocator.Instance.Get<IInteractionService>().OnRiceCookerOpen();
     // TODO: Make this way more readable
-    ServiceLocator.Instance.Get<UI>().PlayDialogue(interactor.transform.position,
+    ServiceLocator.Instance.Get<IDialogueService>().Emit(DialogueEvent.RiceCookerActivate);
+    ServiceLocator.Instance.Get<UI>().PlayDialogue(interactor.transform,
       new DialogueUIData() {
         speaker = "Evie",
         color = Color.black,
