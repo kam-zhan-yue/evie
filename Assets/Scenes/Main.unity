@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358c8f92d18454094be6bb9882091640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialoguePopup
-  dialogueOffset: {x: 0, y: 1}
+  dialogueOffset: {x: 0, y: 50}
   dialogueBox: {fileID: 1548682389}
 --- !u!1 &68264410
 GameObject:
